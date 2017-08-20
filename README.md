@@ -2,7 +2,7 @@
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
 [image1]: ./pic/mpc_pic.png
-[image2]: ./pic/equation.png
+[image2]: ./pic/model.png
 
 This is part of udacity self-driving car nanodegree project part5. In this project I have runed the car in the simulator using vehicle model. 
 * In this model 6 state variables and 2 actuator variables had been used.
