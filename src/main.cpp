@@ -101,29 +101,35 @@ int main() {
           double steering_angle = j[1]["steering_angle"];
           double throttle = j[1]["throttle"];
         
-          // Change state to reflect latency of 0.1;
-          px = px + v * cos(psi) * 0.1;
-          py = py + v * sin(psi) * 0.1;
-          psi = psi - v * (steering_angle / 2.67) * 0.1;
-            
             
           Eigen::VectorXd ptsxvec = Eigen::VectorXd(ptsx.size());
           Eigen::VectorXd ptsyvec = Eigen::VectorXd(ptsy.size());
             
+            
           //Convert map coordinate to car coordinate.
           for(int i = 0; i<ptsx.size(); i++) {
+                
                 ptsxvec[i] = (ptsx[i] - px) * cos(-psi) - (ptsy[i] -py) * sin(-psi);
                 ptsyvec[i] = (ptsx[i] - px) * sin(-psi) + (ptsy[i] -py) *cos(-psi);
-          }
-            
+                
+                
+            }
+        
+      
         
           auto  coeffs = polyfit(ptsxvec, ptsyvec,3);
           double cte = polyeval(coeffs,0)  ;
           double epsi =  -atan(coeffs[1]);
             
-          Eigen::VectorXd state(6);
-          state << 0, 0, 0, v, cte, epsi;
+          //Convert velocity into 100ms and modify px to adjust for latency.
+          v = v * 1.60934;
+          px = v * 100 / (1000*3600);
+
             
+            
+            
+          Eigen::VectorXd state(6);
+          state <<px,0,0,v,cte,epsi;
             
           auto vars = mpc.Solve(state,coeffs);
             
@@ -160,7 +166,6 @@ int main() {
 
           msgJson["next_x"] = next_x_vals;
           msgJson["next_y"] = next_y_vals;
-
 
           auto msg = "42[\"steer\"," + msgJson.dump() + "]";
           std::cout << msg << std::endl;

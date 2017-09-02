@@ -3,6 +3,7 @@
 
 [image1]: ./pic/mpc_pic.png
 [image2]: ./pic/model.png
+[image3]: ./pic/waypoint_transform.png
 
 This is part of udacity self-driving car nanodegree project part5. In this project I have runed the car in the simulator using vehicle model. 
 * In this model 6 state variables and 2 actuator variables had been used.
@@ -36,6 +37,11 @@ Also you can execute project with following steps.
 ---
 ## Model Construction Steps.
 
+### Set appropriate N & dt value. 
+* We should set time duration for the future state to be made from  model  (**T**) for model. **T** is the product of Timesteps **N** and **dt**. 
+* If N is set too low car cannot follow trajectory because of it's low accuracy while too high N make latency of model prediction. 
+* Too low dt make car were unable to follow trajectory well while too high dt large deviation of MPC trajectory due to it's latency. 
+
 ### Set Cost for model. 
 * Following value have been used to set cost that is used to adjust state varaible. 
     * (1) Error from trajectory -> **cte** and **epsi**. 
@@ -47,6 +53,15 @@ Also you can execute project with following steps.
 * Model have been updated with following equation. 
 
 ![alt text][image2]
+
+### Convert Waypoints to map coordinate. 
+* We need to convert the trajectory information from map coordniate's to vehicle's coordinate make model from car's perspective. 
+![alt text][image3]
+
+### Considering Latency. 
+*Our system has a 100ms latency. To handle this latency I predicted the state after 100ms latency. 
+**px = v * 100 / (1000*3600);**
+
 
 ### Predict Trajectory of car. 
 

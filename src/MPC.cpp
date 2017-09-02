@@ -21,12 +21,21 @@ double ref_v = 60;
 const double Lf = 2.67;
 
 // Set weights parameters for the cost function
+/*
 const double weight_cte = 2.5;
 const double weight_epsi = 2.7;
 const double  weight_delta =  4.3;
 const double  weight_acc = 2.3;
 const double  weight_ddelta = 4;
 const double  weight_dacc = 2;
+**/
+const double weight_cte =4.3;
+const double weight_epsi = 12.2;
+const double  weight_delta =  28;
+const double  weight_acc = 1;
+const double  weight_ddelta =23;
+const double  weight_dacc = 1;
+
 class FG_eval {
  public:
   // Fitted polynomial coefficients
